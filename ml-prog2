@@ -1,0 +1,32 @@
+!pip -q install Orange3
+
+from Orange.classification import CN2Learner
+from Orange.data import Table
+
+# CN2 Algorithm
+data = Table("iris")
+model = CN2Learner()(data)
+
+print("CN2 Rules:")
+for rule in model.rule_list:
+    print(rule)
+
+# FOIL Algorithm
+def foil(data):
+    rules = []
+    for x in data:
+        if x["Play"] == "Yes":
+            rules.append(f"IF Wind = {x['Wind']} THEN Play = Yes")
+    return set(rules)
+
+examples = [
+    {"Wind": "Weak", "Play": "Yes"},
+    {"Wind": "Strong", "Play": "No"},
+    {"Wind": "Weak", "Play": "Yes"}
+]
+
+print("\nFOIL Rules:")
+for rule in foil(examples):
+    print(rule)
+
+print("\nResult: CN2 and FOIL rules generated successfully.")
